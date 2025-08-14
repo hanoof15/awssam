@@ -1,10 +1,7 @@
-@@ -1,53 +1,79 @@
-name: SAM Local Test
 name: SAM Local Build & Test on Push
 
 on:
   push:
-    branches: [main, develop]
     branches:
       - main
       - develop
@@ -15,24 +12,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
   sam-local-test:
     runs-on: ubuntu-latest
     permissions:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install AWS SAM CLI
       - name: Cache pip dependencies
         uses: actions/cache@v4
         with:
@@ -50,26 +43,16 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           pipx install aws-sam-cli
 
-      - name: Build SAM app using container
-        run: |
-          export SAM_CLI_TELEMETRY=0
-          sam build --use-container
       - name: Verify SAM CLI
         run: sam --version
 
       - name: Build SAM app
         run: sam build
 
-      - name: Start SAM API locally
       - name: Start SAM Local API in background
         env:
           SAM_CLI_TELEMETRY: 0
         run: |
-          nohup sam local start-api --port 3000 > sam.log 2>&1 &
-          echo $! > pid.txt
-          for i in {1..30}; do
-            resp=$(curl -s http://127.0.0.1:3000/hello)
-            [ -n "$resp" ] && break
           nohup bash -c "sam local start-api --port 3000 --warm-containers EAGER" > sam_local.log 2>&1 &
           echo $! > sam_local_pid.txt
           echo "Waiting for API to be ready..."
