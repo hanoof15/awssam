@@ -70,8 +70,8 @@ jobs:
           echo "GET /hello:"
           curl -s http://127.0.0.1:3000/hello
 
-          echo "GET /hello?name=Raj:"
-          curl -s "http://127.0.0.1:3000/hello?name=hanoof"
+          echo "GET /hello?name=hanoof:"
+          curl -s "http://127.0.0.1:3000/hello?a=10@b=20"
 
       - name: Stop local API
         if: always()
