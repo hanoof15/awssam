@@ -1,6 +1,4 @@
-@@ -1,43 +1,69 @@
 name: SAM Local Test
-name: SAM Local Build & Test on Push
 
 on:
   push:
