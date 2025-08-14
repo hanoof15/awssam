@@ -1,4 +1,6 @@
+@@ -1,53 +1,79 @@
 name: SAM Local Test
+name: SAM Local Build & Test on Push
 
 on:
   push:
@@ -82,3 +84,13 @@ jobs:
 
       - name: Test endpoints
         run: |
+          echo "GET /hello:"
+          curl -s http://127.0.0.1:3000/hello
+
+          echo "GET /hello?name=Raj:"
+          curl -s "http://127.0.0.1:3000/hello?name=Raj"
+
+      - name: Stop local API
+        if: always()
+        run: |
+          [ -f pid.txt ] && kill $(cat pid.txt) || true
