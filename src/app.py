@@ -1,18 +1,16 @@
 import json
 
 def lambda_handler(event, context):
-    print("Event:", event)
 
-    name = None
-    if event.get("queryStringParameters") and "name" in event["queryStringParameters"]:
-        name = event["queryStringParameters"]["name"]
+    if event.get("queryStringParameters") ]:
+        a= event["queryStringParameters"]["a"]
+        b= event["queryStringParameters"]["b"]
     
-    message = f"Hello, {name}!" if name else "Hello from Lambda!"
 
     return {
         "statusCode": 200,
         "headers": {
             "Content-Type": "application/json"
         },
-        "body": json.dumps({"message": message})
+        "body": json.dumps({"message": a+b})
     }
